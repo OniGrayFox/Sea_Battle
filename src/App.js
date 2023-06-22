@@ -65,7 +65,39 @@ import "./styles.css";
 			this.fieldBottom = bottom;
 		}
 
-		static createMatrix
+		static createMatrix() {
+			return [...Array(10)].map(() => Array(10).fill(0));
+		}
+		// n - максимальное значение, которое хотим получить
+		static getRandom = n => Math.floor(Math.random() * (n + 1));
+
+		cleanField() {
+			while (this.field.firstChild) {
+				this.field.removeChild(this.field.firstChild);
+			}
+			this.squadron = {};
+			this.matrix = Field.createMatrix();
+		}
+
+		randomLocationShips() {
+			for (let type in Field.SHIP_DATA) {
+				let count = Field.SHIP_DATA[type][0];
+	
+				let decks = Field.SHIP_DATA[type][1];
+
+				for (let i = 0; i < count; i++) {
+			
+					let options = this.getCoordsDecks(decks);
+				
+					options.decks = decks;
+					// имя корабля, понадобится в дальнейшем для его идентификации
+					options.shipname = type + String(i + 1);
+			
+					const ship = new Ships(this, options);
+					ship.createShip();
+				}
+			}
+		}
 export default function App() {
   return (
     <div>
